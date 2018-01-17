@@ -65,6 +65,9 @@ class TicTacToe(tk.Frame):
                             width=size[0], height=size[1], image=self.blank)
         self.b9.grid(column=2, row=3)
 
+        self.buttons = [self.b1, self.b2, self.b3, self.b4, self.b5,
+                        self.b6, self.b7, self.b8, self.b9]
+
     def click_on_map(self, button, col, row):
         if self.player % 2 == 0:
             button.configure(image=self.circle, state="disable")
@@ -79,13 +82,19 @@ class TicTacToe(tk.Frame):
         winner = self.env.act(row=row, col=col, player=(self.player % 2) + 1)
         if winner != None:
             winner = "Player " + str(winner) + " Wins"
+            self.__disable_all_buttons()
             top = tk.Toplevel()
-            tk.Label(top, text=winner).grid(column=1, row=0)
+            tk.Label(top, text=winner, width=20, height=10).pack()
+
+        if self.env.__isDone__() == True and winner == None:
+            top = tk.Toplevel()
+            self.__disable_all_buttons()
+            tk.Label(top, text="Draw", width=20, height=20).pack()
         self.player = self.player + 1
 
-    def click_cancel(self):
-        self.master.destroy()
-
+    def __disable_all_buttons(self):
+        for b in self.buttons:
+            b.configure(state='disable')
 
 class Game_Logic():
     def __init__(self):
