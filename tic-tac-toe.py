@@ -69,32 +69,50 @@ class TicTacToe(tk.Frame):
                         self.b6, self.b7, self.b8, self.b9]
 
     def click_on_map(self, button, col, row):
+        winner = self.env.act(row=row, col=col, player=(self.player % 2) + 1)
         if self.player % 2 == 0:
             button.configure(image=self.circle, state="disable")
-            self.infoOne.configure(foreground="black")
-            self.infoTwo.configure(foreground="red")
+            if winner == None or self.env.__isDone__() != True:
+                self.infoOne.configure(foreground="black")
+                self.infoTwo.configure(foreground="red")
 
         else:
             button.configure(image=self.tic, state="disable")
-            self.infoOne.configure(foreground="red")
-            self.infoTwo.configure(foreground="black")
+            if winner == None or self.env.__isDone__() != True:
+                self.infoOne.configure(foreground="red")
+                self.infoTwo.configure(foreground="black")
 
-        winner = self.env.act(row=row, col=col, player=(self.player % 2) + 1)
         if winner != None:
             winner = "Player " + str(winner) + " Wins"
-            self.__disable_all_buttons()
+            self.__disable_all_buttons__()
             top = tk.Toplevel()
-            tk.Label(top, text=winner, width=20, height=10).pack()
+            tk.Label(top, text=winner, width=20, height=10).grid(column=0, row=0)
+            tk.Button(top, text="restart", command=
+            lambda: self.click_on_restart(top)).grid(column=0, row=1)
+            return None
 
         if self.env.__isDone__() == True and winner == None:
             top = tk.Toplevel()
-            self.__disable_all_buttons()
-            tk.Label(top, text="Draw", width=20, height=20).pack()
+            self.__disable_all_buttons__()
+            tk.Label(top, text="Draw", width=20, height=10).grid(column=0, row=0)
+            tk.Button(top, text="restart", command=
+            lambda: self.click_on_restart(top)).grid(column=0, row=1)
+            return None
+
         self.player = self.player + 1
 
-    def __disable_all_buttons(self):
+    def __disable_all_buttons__(self):
         for b in self.buttons:
             b.configure(state='disable')
+
+    def click_on_restart(self, windows):
+        for b in self.buttons:
+            b.configure(state='active', image=self.blank)
+        self.env.reset()
+        self.player = 0
+        self.infoOne.configure(foreground="red")
+        self.infoTwo.configure(foreground="black")
+        windows.destroy()
 
 class Game_Logic():
     def __init__(self):
@@ -125,6 +143,11 @@ class Game_Logic():
                 print(e + " ")
             print()
         print()
+
+    def reset(self):
+        self.game_map = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.winner = None
+
 
     def __isDone__(self):
         count = 0
@@ -163,7 +186,7 @@ class Game_Logic():
             self.winner = game_map[2][0]
 
         if game_map[2][0] == game_map[1][1] == game_map[0][2] != 0:
-            self.winner = game_map[0][0]
+            self.winner = game_map[2][0]
 
         return self.winner
 
