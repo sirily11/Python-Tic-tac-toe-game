@@ -13,20 +13,20 @@ class TicTacToe(tk.Frame):
         self.tic = Image.open("Tick.jpg")
         self.tic.thumbnail(size, Image.ANTIALIAS)
         self.tic = ImageTk.PhotoImage(self.tic)
-
+        # Add circle picture
         self.circle = Image.open("circle.jpg")
         self.circle.thumbnail(size, Image.ANTIALIAS)
         self.circle = ImageTk.PhotoImage(self.circle)
-
+        # Add Blank space image
         self.blank = Image.open(("blank.jpg"))
         self.blank.thumbnail(size, Image.ANTIALIAS)
         self.blank = ImageTk.PhotoImage(self.blank)
-
+        # Set the player's info
         self.infoOne = tk.Label(master, text='Player One', foreground="red")
         self.infoOne.grid(column=0, row=0)
         self.infoTwo = tk.Label(master, text='Player Two')
         self.infoTwo.grid(column=2, row=0)
-
+        # Setting the windows's name
         self.player = 0
         self.master.title("Tic-Tac-Toe")
         self.b1 = tk.Button(command=lambda: self.click_on_map(self.b1, 0, 0),
