@@ -10,11 +10,11 @@ class TicTacToe(tk.Frame):
         # This is the way that how python would read the
         # icon from the directory and would resize the
         # Image to the size we want
-        self.tic = Image.open("Tick.jpg")
+        self.tic = Image.open("x.jpg")
         self.tic.thumbnail(size, Image.ANTIALIAS)
         self.tic = ImageTk.PhotoImage(self.tic)
         # Add circle picture
-        self.circle = Image.open("circle.jpg")
+        self.circle = Image.open("o.jpg")
         self.circle.thumbnail(size, Image.ANTIALIAS)
         self.circle = ImageTk.PhotoImage(self.circle)
         # Add Blank space image
